@@ -1,0 +1,382 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\graphicspath{ {./images/} }
+
+\title{Final practice problems }
+
+\author{}
+\date{}
+
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+  \item (Three players) A basketball team has three star players called James, Kevin, and Kyrie, who are often injured. Below you can see the results of ten past games, as well as what players were present $(\boldsymbol{\checkmark})$ or absent $(\boldsymbol{X})$ each time.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Result & James & Kevin & Kyrie \\
+\hline
+Win & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+\hline
+Win & $\checkmark$ & $\boldsymbol{X}$ & $\checkmark$ \\
+\hline
+Loss & $\checkmark$ & $\boldsymbol{X}$ & $\boldsymbol{X}$ \\
+\hline
+Win & $\boldsymbol{X}$ & $\checkmark$ & $\boldsymbol{x}$ \\
+\hline
+Win & $\checkmark$ & $\checkmark$ & $\boldsymbol{X}$ \\
+\hline
+Loss & $\checkmark$ & $\checkmark$ & $\boldsymbol{x}$ \\
+\hline
+Loss & $\checkmark$ & $\boldsymbol{x}$ & $\boldsymbol{x}$ \\
+\hline
+Win & $\boldsymbol{X}$ & $\checkmark$ & $\checkmark$ \\
+\hline
+Loss & $\boldsymbol{X}$ & $\boldsymbol{x}$ & $\checkmark$ \\
+\hline
+Win & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+\hline
+\end{tabular}
+\end{center}
+
+(a) Can we estimate the probability that the team wins a game when none of the three players participate using the empirical-probability estimator?
+\begin{itemize}
+    \item no we do not have the event that the game is won given none of the three players participate in the data set so we can not estimate it empirically from data 
+\end{itemize}
+
+(b) Apply naive Bayes to estimate the probability that the team wins a game when none of the three players participate.
+\begin{itemize}
+    \item call $\tilde{w}$ the rv representing if they win or now and $x_1,x_2_x_3$ the rvs representing if each player was present or now. 
+    \item so our goal is to estimate $P(\tilde{w}=1|x_1=0,x_2=0,x=3=0)$
+    \item we are going to do this with the naive Bayes estimator which makes the assumption that $x_1,x_2,x_3$ are conditionally independent given the w. 
+    \item thus we can calculate $P(\tilde{w}=1|x_1=0,x_2=0,x=3=0)$ as $P(\tilde{w}=1|x_1=0,x_2=0,x=3=0)=\frac{P(\tilde{w}=1,x_1=0,x_2=0,x=3=0)}{P(x_1=0,x_2=0,x=3=0)}=\frac{P(\tilde{w}=1)P(x_1=0|\tilde{w}=1)P(x_2=0|\tilde{w}=1)P(x=3=0|\tilde{w}=1)}{P(x_1=0,x_2=0,x=3=0)}=\frac{P(\tilde{w}=1)P(x_1=0|\tilde{w}=1)P(x_2=0|\tilde{w}=1)P(x=3=0|\tilde{w}=1)}{P(\tilde{w}=1)P(x_1=0|\tilde{w}=1)P(x_2=0|\tilde{w}=1)P(x=3=0|\tilde{w}=1)+P(\tilde{w}=0)P(x_1=0|\tilde{w}=0)P(x_2=0|\tilde{w}=0)P(x=3=0|\tilde{w}=0)}=\frac{\frac{1}{90}}{\frac{1}{90}+\frac{9}{160}}$ 
+\end{itemize}
+\begin{enumerate}
+  \setcounter{enumi}{1}
+  \item (Employment dynamics)
+\end{enumerate}
+
+A researcher is interested in modeling the employment dynamics of young people. She assumes that at age 18 everyone is a student and models the employment status at age $18+i$ as a random variable $\tilde{x}_{i}$. She models the joint distribution of $\tilde{x}_{0}, \tilde{x}_{1} \ldots$ as a Markov chain with transition matrix:
+
+$$
+\begin{aligned}
+& \text { Student Employed Unemployed } \\
+& \left(\begin{array}{ccc}0.8 & 0 & 0 \\0.2 & 0.9 & 0.4 \\0 & 0.1 & 0.6\end{array}\right) \text { Student } \begin{gathered}\text { Employed } \\\text { Unemployed }\end{gathered}
+\end{aligned}
+$$
+
+(a) Let $\tilde{s}$ denote the number of years that a person remains a student after age 18 . What is the pmf of $\tilde{s}$ ?
+\begin{itemize}
+    \item here we are looking for the number of years that a person remains a student. so that is they must be a student for s years and then become either employed or unemployed at $s+1$ years.
+    \item let $s_i$ repersent if a person is a student in state i
+    \item this can be model as geometric $P(s_{i+1}=0|S_{i}=1,S_{i-1}=1,S_{i-2}=1,...,S_{1}=1)$ by the markov property this is equivelnt to $P(s_{i+1}=0|S_{i}=1,S_{i-2}=1,...,S_{1}=1)=P(s_{i+1}=0|S_{i}=1)P(S_{i}=1|S_{i-1}=1)...P(S_{2}=1|S_{1}=1)$
+    thus we have $P(\tilde{s}=i)=P(s_{i+1}=0|S_{i}=1,S_{i-1}=1,...,S_{1}=1)=.8^{i}(.2)$
+\end{itemize}
+
+(b) If we know that someone was employed at $i=3$, what is the conditional probability that they were a student at $i=1$ given this information?
+\begin{itemize}
+    \item by the markov property we can write $P(s_1=S|s_3=E)=\frac{\Sigma_{i\in S,E,O}P(s_1=S,S_2=i,s_3=E)}{P(s_3=E)}=\frac{\Sigma_{i\in S,E,O}P(s_1=S,S_2=i,s_3=E)}{\Sigma_{j\in S,E,O}\Sigma_{j\in S,E,O}P(s_1=j,S_2=k,s_3=E)}=.615$
+\end{itemize}
+
+(c) Show that the state vector of a stationary distribution of the Markov chain must be of the form
+
+$$
+\left[\begin{array}{c}
+0 \\
+\alpha \\
+1-\alpha
+\end{array}\right]
+$$
+
+where $0 \leq \alpha \leq 1$, and compute the value of $\alpha$. 
+\begin{itemize}
+    \item we know that the stationary distribution of a Markov chain must be an eivenvector of T with eigen value one.
+    \item thus it must be the case that T*$
+\left[\begin{array}{c}
+0 \\
+\alpha \\
+1-\alpha
+\end{array}\right]
+$=$
+\left[\begin{array}{c}
+0 \\
+\alpha \\
+1-\alpha
+\end{array}\right]
+$\item if this were the case it would mean that $\pi[0]=0$ in other words the first entery of the state matrix must be zero and the remaining two enteries are probabiltie so much be between 0 and 1 nad must some to 1. thus the only form the stationary state can take is $
+\left[\begin{array}{c}
+0 \\
+\alpha \\
+1-\alpha
+\end{array}\right]
+$ with $\alpha\in[0,1]$
+\item working out $T*\pi$ yields $
+\left[\begin{array}{c}
+0 \\
+.4+.5\alpha \\
+.6-5\alpha
+\end{array}\right]
+$ \item this yields us the follwing equations $.4+.5\alpha =\alpha$ and $.6-5\alpha=1-\alpha$
+\item this can be solved to get $\alpha=.8$
+
+\end{itemize}
+
+
+3. (Cross) Assume that the joint pdf of $\tilde{x}$ and $\tilde{y}$ is uniform in the shaded region:
+
+\begin{center}
+\includegraphics[max width=\textwidth]{2022_12_06_5fb1d80fedf1f8872f53g-2}
+\end{center}
+
+(a) Compute the marginal pdf of $\tilde{x}$.
+
+(b) Compute the conditional pdf of $\tilde{y}$ given $\tilde{x}$. Are $\tilde{x}$ and $\tilde{y}$ independent?
+
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item (Wolf) We model the location of a wolf in a national park as a random variable $\tilde{x}$. When it snows, the wolf stays away from certain areas of the park. We define a random variable $\tilde{s}$ to represent whether it snows $(\tilde{s}=1)$ or not $(\tilde{s}=0)$. We assume that it snows one fourth of the time, so $\mathrm{P}(\tilde{s}=1)=0.25$. Here are the conditional pdfs of $\tilde{x}$ given $\tilde{s}$. Each density is constant in the corresponding shaded area and zero elsewhere.\\
+\includegraphics[max width=\textwidth, center]{2022_12_06_5fb1d80fedf1f8872f53g-2(1)}
+\end{enumerate}
+
+(a) If we observe that the position of the wolf is $(-1,-1)$. What is the conditional probability that it is snowing?
+
+(b) What is the mean of $\tilde{x}[2]$ ?
+\begin{itemize}
+    \item assume that x[2] is a function of x[2],s 
+    \item thus we can think of E[x[2]]=$E[\mu_{x_[2]|s}(s)]$
+    \item so our first goal is to find $\mu_{x_[2]|,s}(,s)$ 
+    \item this is a conditional mean function so it's value will be completly determined by the value of \s
+   \item so suppose that s=0 then we are going to have $\mu_{x[0]|s}(s=0)=\int_{x_2=-5}^{5}x_2f_{x_2|s}(x_2|s=0)dx_2=
+   \int_{x_2=-5}^{5}x_2\int_{x_1=-5}^{-5}f_{x_1,x_2|s}(x_1,x_2|s=0)dx=\int_{-5}^{5}x_2\int_{-5}^{5}\frac{1}{100}dx=0$
+   \item so suppose that s=0 then we are going to have $\mu_{x[0]|s}(s=1)=\int_{x_2=-5}^{0}x_2f_{x_2|s}(x_2|s=1)dx_2=
+   \int_{x_2=-5}^{0}x_2\int_{x_1=-5}^{-5}f_{x_1,x_2|s}(x_1,x_2|s=1)dx=\int_{-5}^{0}x_2\int_{-5}^{5}\frac{1}{50}dx=\frac{1}{5}\int_{x=-5}^{0}xdx=2.5$
+   \item thus we see that $E[x_2]=e[\mu_{x_2|s}(s)]=\Sigma_{s=0}^{1}p(s=s)\mu_{x_2|s}(s)=0(\frac{3}{4})-2.5(\frac{1}{4}=\frac{5}{8}$
+\end{itemize}
+(c) What is the minimum mean-squared-error estimator of $\tilde{x}[1]$ given $\tilde{x}[2]$
+\begin{itemize}
+    \item as we showed in the regresion lecture the min mean squared error funciton is the conditonla mean function, that is $\mu_{x_1|x_2}(x_2)$
+    \item this can be expressed as $\mu_{x_1|x_2}(x_2)=\int_{x\in x_2}xf_{x_1|x_2}(x_1|x_2)dx$
+    \item so we are going to want to look into $f_{x_1|x_2}(x_1|x_2)$ looking at the chart we can see that it's value will be zero if $x_2\leq -5$
+    or $x_2\geq5$ 
+    \item we can now think about $x_2\in[-5,0]$ this is a posabible postion for the wolf on both snowy and non snowy days thus 
+    $f_{x_1|x_2}(x_1|x_2)=\frac{f_{x_1,x_2}(x_1.x_2)}{f_{x_2}(x_2)}=
+    \frac{\Sigma_{s=0}^{1}f_{x_1,x_2,s}(x_1.x_2,s)}{\Sigma_{s=0}^{1}\int_{x_1=-5}^{5}f_{x_1,x_2,s}(x_1,x_2,s)}=
+    \frac{\Sigma_{s=0}^{1}f_{x_1,x_2|s}(x_1.x_2|s)P_{s}(s)}{\Sigma_{s=0}^{1}\int_{x_1=-5}^{5}f_{x_1,x_2|s}(x_1,x_2|s)P_{S}(s)}=\frac{1}{10}$
+    \item we can now think about $x_2\in[0,5]$ this is only a possible postioin for the wolf on non-snowy days thus
+    $f_{x_1|x_2}(x_1|x_2)=\frac{f_{x_1,x_2}(x_1.x_2)}{f_{x_2}(x_2)}=
+    \frac{f_{x_1,x_2,s}(x_1.x_2,s=0)}{\int_{x_1=-5}^{5}f_{x_1,x_2,s}(x_1,x_2,s=0)}=
+    \frac{f_{x_1,x_2|s}(x_1.x_2|s=0)P_{s}(s=0)}{\int_{x_1=-5}^{5}f_{x_1,x_2|s}(x_1,x_2|s=0)P_{S}(s=0)}=\frac{1}{10}$
+    \item thus as long as the wolf has an $x_2$ positon in -5,5 we have $f_{x_1|x_2}(x_1|x_2)=\frac{1}{10}$
+    \item now we can solve$\mu_{x_1|x_2}(x_2)=\int_{x=-5}^{5}xf_{x_1|x_2}(x_1|x_2)dx=\int_{x=-5}^{5}\frac{x}{10}dx=0$ always 
+    \item it is intresting to note that the best guess of $x_1$ given $x_2$ is $E[x_1]$ thus the two quantites are independint. 
+\end{itemize}
+
+
+? No beetle
+
+Good weather
+
+Bad weather\\
+\includegraphics[max width=\textwidth, center]{2022_12_06_5fb1d80fedf1f8872f53g-3}
+
+Beetle\\
+\includegraphics[max width=\textwidth, center]{2022_12_06_5fb1d80fedf1f8872f53g-3(1)}
+
+Figure 1: Estimated conditional pdf of the potato production in tons given the weather and the presence of the beetles.
+
+\section{5. (Potatoes)}
+Your aunt in Idaho asks you to analyze the production of her potato farm. Using data from 45 years, you determine that the yearly production depends mainly on two factors: the weather and the presence of a beetle (an insect which ruins the plants). You model the weather using a random variable $\tilde{w}$ and the presence of the beetle using a random variable $\tilde{b}$. $\tilde{w}=1$ means good weather and $\tilde{w}=0$ means bad weather. $\tilde{b}=1$ means that the beetle is present and $\tilde{b}=0$ that it is absent. Out of the 45 years, the following table shows how many years had good/bad weather and in how many the beetle was present.
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & No beetle & Beetle \\
+\hline
+Good weather & 5 & 10 \\
+\hline
+Bad weather & 10 & 20 \\
+\hline
+\end{tabular}
+\end{center}
+
+You model the potato production during one year as a continuous random variable $\tilde{x}$. Figure 1 shows the estimated conditional pdf of $\tilde{x}$ given $\tilde{b}$ and $\tilde{w}$, obtained by fitting a Gaussian distribution to the data.
+
+(a) Is the distribution of $\tilde{x}$ Gaussian?
+\begin{itemize}
+    \item x it's self is likely not gaussian but looking at the figures it may be reasonable to say
+    that x is gausain conditoned on the presenence or absance of a beatle or the weather and is thus a gaussian mixture model that is X is a wieghed sum of gausians 
+\end{itemize}
+(b) This year the weather is good, but the beetle is present. What is the best estimate for the potato production in terms of mean square error according to your model?
+\begin{itemize}
+    \item estiamte implies that we are looking for a single value where as we may chose a function if we were looking for an estimator
+    \item so we are going to chose the mean of the distrobution given w=1.b=1 thus which is about 50 tones. 
+\end{itemize}
+
+
+(c) 50 years ago the potato production was 40 tons. There is no data regarding the beetles, 
+but checking online you find out that the weather that year was good. Given this information determine whether
+it is more likely that the beetle was present or absent.
+\begin{itemize}
+    \item we know that P(b=1|...)=1-P(b=0|....) so we just need to compute 1 of them see if that value is greater than .5 and if so chose it and otherwise predict the other label 
+    \item so $P(b=1|x=40,w=1)=\frac{p(b=1,x=40,w=1)}{P(w=1,x=40)}=\frac{p(x=40|b=1,w=1)P(b=1,w=1)}{\Sigma_{b=0}^{1}p(x-40|b=b,w=1)P(b=b,w=1)}$
+    \item from data we can see that $P(b=1,w=1)=\frac{10}{45}$ and $P(b=0,w=1)=\frac{5}{45}$
+    \item we can also look at the graphs and see that $p(x=40|b=1,w=1)=.02$ and $p(x=40|b=1,w=1)=.01$
+    \item plugging all this in yields that it is more likely that the beatle was present 
+\end{itemize}
+
+(d) Compute the mean of the potato production if the weather is bad.
+
+\begin{itemize}
+    \item we can express $\mu_{x|w}(w=0)=\int_{x}\mu_{x|w}(w=0)f_{x|w}(x,w)dx=\Sigma_{b=0}^{1}P(b|w=0)\int_{x}\mu_{x|w,b}(w=0,b)f_{x|w,b}(x|w,b)dx$
+    \item so now we are dealing with a weighted sum of gausian means. 
+    \item this ends up giving us $\frac{100}{3}$
+\end{itemize}
+ 
+\begin{enumerate}
+  \setcounter{enumi}{5}
+  \item (Dead fish) Two species of fish, which we call $a$ and $b$, live in a river. A biologist wants to identify dead fish found in the river. She models the problem probabilistically. First, she determines that there are roughly the same number of $a$ fish as of $b$ fish, so the probability of a dead fish being $a$ is the same as the probability of it being $b$. Second, $a$ fishes live at the beginning of the river and $b$ fishes at the end. She models the river as a unit interval. Then she models the position of a dead fish as a random variable $\tilde{x}$. She estimates the conditional pdfs of $\tilde{x}$ given the species $\tilde{s}$ of the fish and determines that they are equal to $2-2 x$ (given $\tilde{s}=a$ ) and $2 x$ (given $\tilde{s}=b$ ) when $0 \leq x \leq 1$, and zero otherwise. The pdfs are shown in the following figure.
+\end{enumerate}
+
+(a) Compute the pdf of $\tilde{x}$.
+
+(b) If a fish is found at position $0.25$, what is the probability that it belongs to species $b$ ?
+
+(c) Compute the conditional cdf of $\tilde{x}$ given the species of the fish.
+\newpage
+(d) Apply inverse transform sampling to simulate a sample from the joint distribution of the species and the position of the dead fish, using the following two independent samples obtained from a uniform distribution: $0.8,0.64$\begin{itemize}
+    \item here we are given two samples from a uniform distribution $u_1=.8$ and $u_2=.64$ and we are going to use inverse transform sampling to simulate a draw from our joint distribution of $f_{x,s}(x,s)$
+    \item we can understand  $f_{x,s}(x,s)=P_{s}(s)f_{x|s}(x|s)$
+    \item so our first step is to describe $P_{s}(s)$ it is a binary discrete variable so things are a bit dumb, but lets model as our input $u_2$ $P_{s}(s=a)=1-u_2$ and $P_{s}(s=b)=u_2$ then chose $s_{sim}=max(P_{s}(a),P_{s}(a))$ \item this is the part that makes least sense to me, but the real point is we think of $u_1$ as the likelihood of random fish being species b, as opposed to a position. then we use that as input to our second part 2 model dependencies.  
+    \item now we use $F_{x|s}(x|s)$ which we solved for in part b. we use the cdf because we are sampling from the uniform cdf, and the pdf is the derivative so information is still present. 
+    \item we know that given x is in the range $F_{x|s}(x|s) $= 
+    \begin{cases}
+       2x-x^2, & \text{if } s=a\\
+        x^2, & \text{if } s=b
+    \end{cases}
+    \item we can invert them as $u=2x-x^2$ which yields $u=1-x^2$ if the label is a. and $u=x^2$ which yields $u=\sqrt{x}$ if the label is b. 
+    \item applying our rule we see that $u_1\geq .5$ so $s_{sim}=b$
+    \item then we can find $x_{\sim}=F^{-1}_{x|s}(u_2,s_sim)$ since the simulated label is be $F^{-1}(x)=\sqrt{x}$ and we see that $x_{sim}=\sqrt{u_2}=\sqrt{.64}=.8$
+    \item thus using inverse transform sampling we have obtained an individual of species b, that died at position .8
+\end{itemize}
+
+
+
+(e) She finds two fish. Let $\tilde{x}_{1}$ be the position of the first fish, and $\tilde{x}_{2}$ the position of the second. $\tilde{x}_{1}$ and $\tilde{x}_{2}$ are independent and each have the same distribution as $\tilde{x}$. Derive an expression for the expected value of the distance between them $\left(\tilde{x}_{2}-\tilde{x}_{1}\right)^{2}$ as a function $\sigma_{\tilde{x}}^{2}$ of the variance of $\tilde{x}$ that is valid for any distribution of $\tilde{x}$ with finite variance.
+
+\begin{enumerate}
+  \setcounter{enumi}{6}
+  \item (Gaussian Bayesian model) A scientist is trying to determine the temperature on top of a mountain based on a noisy sensor reading. They expect the temperature to be close to 0 degrees Celsius. They decide to encode the uncertainty about the sensor reading using a Bayesian model. They model the reading as a Gaussian random variable $\tilde{y}$ with a variance parameter equal to one and a mean parameter equal to a Gaussian random variable $\tilde{\mu}$ with mean zero and variance $\sigma$.
+\end{enumerate}
+
+(a) Show that $\left(\begin{array}{c}\tilde{\mu} \\ \tilde{y}\end{array}\right)$ is a Gaussian random vector with zero mean, and derive its covariancematrix parameter. The following formula for the inverse of a 2 x 2 matrix might be useful:
+
+$$
+\left[\begin{array}{ll}
+a & b \\
+c & d
+\end{array}\right]^{-1}=\frac{1}{a d-b c}\left[\begin{array}{cc}
+d & -b \\
+-c & a
+\end{array}\right] .
+$$
+\begin{itemize}
+    \item  the logic of this one is kind of tricky so bear with me. 
+    \item so we are given that y is a gausian rv with varince 1 and mean  
+    \item where its mean $\Tilde{\mu}$ is a random variable, which is normally distributed with variance $\sigma^2$ and mean 0 
+    \item and radnom vector is described by its joint pmf $p_{y,\mu}(y,\mu)$ by the chain rule we can expand this as $p_{y,\mu}(y,\mu)=p_{\mu}(\mu)p_{y|\mu}(y|\mu)$
+    \item we know this marginal and conditonal pmf from the problem descritpion thus we have $p_{y,\mu}(y,\mu)=p_{\mu}(\mu)p_{y|\mu}(y|\mu)=\frac{1}{\sqrt{2\pi}\sigma}e^{\frac{-1}{2}\frac{(\mu)^2}{\sigma^2}}\frac{1}{\sqrt{2\pi}}e^{\frac{-1}{2}(y-\mu)^2}$ we can simplfiy this to get $\frac{1}{2\pi\sigma}e^{\frac{-1}{2}(\frac{\mu^2}{\sigma^2}+\mu^2-2\sigma y+y^2}$
+    \item we would like to find a matrix $\Sigma^{-1}$ such that $\frac{1}{2\pi\sigma}e^{\frac{-1}{2}
+    \begin{pmatrix}\mu \\ y\end{pmatrix}^{T} }\Sigma^{-1}\begin{pmatrix}\mu \\ y\end{pmatrix}$ equals the above expression 
+    \item solving this out we get $\Sigma^{-1}=\begin{pmatrix}
+        1+\sigma^2&-1\\-1&1
+    \end{pmatrix}$
+    \item this can be inverted to obtain $\Sigma=\begin{pmatrix}
+        \sigma^2 & \sigma^2\\\sigma^2&1+\sigma^2
+    \end{pmatrix}$
+\end{itemize}
+(b) Derive the posterior distribution of $\tilde{\mu}$ given $\tilde{y}=y$. (Hint: You can use results from the notes.)
+
+\begin{itemize}
+    \item recall that in the baysain framework the prior is $P_{\mu}(\mu)$ and the posterior is $P_{\mu|y}(\mu|y)$
+    \item therome 5.24 in chapter 5 of the textbook does this in more detail, but i am going to derive the posterior and prior 
+    \item just to keep things slightly more simple call $\mu=b$ and $y=a$.
+    \item so we are first going to re-write our covariance matrix  \begin{pmatrix}
+        \sigma_a^2 & \ro\sigma_a\sigma_b\\\ro\sigma_a\sigma_b&\sigma_b^2
+    \end{pmatrix}
+    \item becuase of the way we orginally computer our covariance matrix we need to set  $\sigma_a^2=1+\sigma^2$ meanign that $\sigma_a=\sigma_\mu=\sqrt{1+\sigma_a}$
+    \item we can also define $\sigma_b=\sigma$
+    \item and finally we can call $\rho=\frac{\sigma}{\sqrt{1+\sigma^2}}$
+    \item with all this in place we can apply therome 5.24 and see that 
+    \item the prior of theta or the marginal of b =$f_{\theta}(\theta)$ is a gausian rv with variance  $\sigma_b=\sigma$ and mean $\mu_b=0$ (from our intital assumptions 
+    \item our posterior on the other hand which is the random variable $P_{\theta|y}(\theta|y)$ also called b condtional on a has mean $\mu_{cond}=\mu_b+\frac{\ro\sigma_b(y-\mu_a)}{\sigma_a}=\frac{\sigma^2y}{1+\sigma^2}$ as well as variance $\sigma_{cond}^2=\frac{\sigma^2}{1+\sigma^2}$ 
+\end{itemize}
+
+(c) Sketch the prior and posterior distribution of $\tilde{\mu}$ when $y=-1$ and $\sigma^{2}=0.01$. Is the scientist confident on the prior? Is the posterior very different from the prior?
+\item all the calcualtions are done above the real point is that a high standard devation reflects a prior that is not that strong and thus the posterior will shift a lot in response to unexpected data 
+\item on the other hand a low standard devaition refelcts storng belife in the prior and thus the posteriro shifts less.
+
+
+(d) Sketch the prior and posterior distribution of $\tilde{\mu}$ when $y=-1$ and $\sigma^{2}=10$. Is the scientist confident on the prior? Is the posterior very different from the prior?
+
+\begin{enumerate}
+  \setcounter{enumi}{7}
+  \item (Basketball player) From past statistics, we determine that the probability that a certain basketball player makes a 2-point shot, a 3-point shot, and a free throw are 0.5, 0.3, and $0.8$ respectively. We model the number of 2-point shots, 3-point shots and free throws they attempt during a game as being uniformly distributed between 0 and 4 (i.e. they attempt $0,1,2,3$ or 42 -point shots with the same probability, and the same for free throws and 3-point shots). What is the mean number of points scored by the player in a game? Note that we don't make any independence or conditional independence assumptions.
+
+
+
+  \begin{itemize}
+      \item LEt us deffine the total number of points a player makes as $\Tilde{p}=m_1+2*m_2+3*m_3$ where $m_i$ is the number of times that player made shots of that value 
+      \item we can see that $P(x_1,x_2,x_3)$ where $x_1,x_2,x_3$ are the number of shots of each type that were made 
+      \item so we express $E[\Tilde{p}]=E[P(x_1,x_2,x_2)]=E[m1+2m2+3m_3]$ by the linearity of expectations we can write $E[\Tilde{p}]=E[P(m_1,m_2,m_2)]=E[m1+2m2+3m_3]=E[m_1]+E[m_2]+E[m_3]$
+      \item so now lets look at $E[m_i]$ is a function of $x_i$ that is $E[m_i(x_i)]$ 
+      \item further notice that conditioned on $x_i=x$ that is the number of attempted points being set $P_{m_i|x_i}(m_i,x)$ is a binomial random variable with parameters $\theta_i$ representing the likelyhood that a shot of type i is made as well as $x_i$ representing the total number of shots that the player has attempted 
+      \item so we can use iterated expecations and find $E[m_i]=E[\mi_{m_i|x_i}(x_i)]$ 
+      \item so if we consider $E[\mi_{m_i|x_i}(x_i)]$ as we know it is a binomial rv, we know its mean at any fixed value xi thus $\mi_{m_i|x_i}(x_i)=\theta_i x_i$
+      \item thus we can express $E[m_j]=E[\mi_{m_j|x_i}(x_i)]=\sigma_{i=1}^{4}\theta_j x_i P(x_i)$ note here that $\theta_j $ is fixed in i and only depends on the type of shot we are taking not the number of shots we have taken 
+      \item this yields $E[m_j]=E[\mu_{m_j|x_i}(x_i)]=\sigma_{i=1}^{4}\theta_j x_i P(x_i)=\theta_j=\sigma_{i=1}^{4}\theta_j x_i P(x_i)=\sigma_j(\frac{0+1+2+3+4)}{0}=2\sigma_j$ 
+      \item so thus regardless of the type of shot we are tkaing its expectat value $E[m_j]=2\sigma_j$ only depends on teh likelyhood of making that type of shot 
+      \item thus we can finally write $E[m]=E[m(m_1.m_2.m_3)]=E[m_1]+2E[m_2]+3E[m_3]E[E[\mu_{m_1|x_i}(x_i)]]+2E[E[\mu_{m_2|x_i}(x_i)]]+3E[E[\mu_{m_3|x_i}(x_i)]]=2\theta_1+2*2*\theta_2+2*3\theta_3=2\left(\frac{8}{10}+2\cdot\frac{5}{10}+3\cdot\frac{3}{10}\right)=5.4$
+  \end{itemize}
+
+  \item (Chocolate bar) A company hires a data scientist with dubious ethics to market a chocolate bar that is supposed to help reduce cholesterol. The data scientist designs a study where half of the participants are mean and half are women. The treatment group in the study eats one chocolate bar daily for a week. In reality, the average treatment effect (ATE) of doing this is $+10 \mathrm{mg} / \mathrm{dL}$ for men, and the same for women. If they don't take the bar, the men in the study have an average cholesterol level of $140 \mathrm{mg} / \mathrm{dL}$ and the women have an average cholesterol level of $120 \mathrm{mg} / \mathrm{dL}$. The data scientist assigns each man to the treatment group with probability $\alpha$ and to the control group with probability $1-\alpha$. The women are assigned to either group with probability $1 / 2$.
+
+\end{enumerate}
+
+(a) Derive the observed ATE as a function of $\alpha$.
+
+\begin{itemize}
+    \item our goal is to find estiamte the observed ate which we do as $\mu_{y|t}(y|t=i)$ where i is zero or 1 
+    \item so we can view $\mu_{y|t}(y|t=1)=\Sigma_{s=0}^{1}p(s=s|t=1)\mu_{y|t,s}(t=1,s=s)$ 
+\item let us first find $P(s=s|t=1)=\frac{P(s=s,t=1)}{P(t=1)}=\frac{P(t=1|s=s)p(s=s)}{P(t=1|s=0)P(s=0)+P(t=1|s=1)P(s=1)}$
+\item given s=man we get $P(s=man|t=1)=\frac{P(t=1|s=man)p(s=man)}{P(t=1|s=0)P(s=0)+P(t=1|s=1)P(s=1)}=\frac{(\alpha)(\frac{1}{2})}{(\alpha)(\frac{1}{2})+\frac{1}{2}\frac{1}{2}}=\frac{\alpha}{\alpha+\frac{1}{2}}$
+\item given s=woman we get $P(s=woman|t=1)=\frac{P(t=1|s=woman)p(s=woman)}{P(t=1|s=0)P(s=0)+P(t=1|s=1)P(s=1)}=\frac{\frac{1}{2}(\frac{1}{2})}{(\alpha)(\frac{1}{2})+\frac{1}{2}\frac{1}{2}}=\frac{1}{2\alpha+1}$
+\item if s=woman and t=0 we get $P(s=woman|t=0)=\frac{P(t=0|s=woman)p(s=woman)}{P(t=0|s=0)P(s=0)+P(t=0|s=1)P(s=1)}=
+\frac{\frac{1}{2}\frac{1}{2}}{\frac{1}{2}\frac{1}{2}+\frac{1}{2}(2-\alpha)}=\frac{\frac{1}{2}}{\alpha+\frac{1}{2}}$
+\item finally if s=men and t=0 we $P(s=men|t=0)=\frac{1-\alpha}{1-\alpha+\frac{1}{2}}$
+\item also with the given data we can estiamte $\mu_y|t,s(t,s)$ for all cases 
+\item firstly it is given that the average colesteral of woman outside of the treamtnet group $\mu_y|t,s(t=0,s=female)=120$
+\item we can use this to find $\mu_y|t,s(t=1,s=female)=y_2$ such that $\frac{1}{2}y_1+\frac{1}{2}120=5$ this yields $\mu_y|t,s(t=1,s=female)=130$
+\item we are also given that $\mu_y|t,s(t=0,s=male)=140$ and can find that $\mu_y|t,s(t=1,s=female)=150$ in the same way 
+\item with this we have everyhting we need to find the observed ate. 
+\item that is $ATE_{observed}=\mu_{y|t}(y|t=1)-\mu_{y|t}(y|t=0)$ as stated above $\mu_{y|t}(y|t=1)=\Sigma_{s=0}^{1}p(s=s|t=1)\mu_{y|t,s}(t=1,s=s)=\frac{\alpha}{\alpha+\frac{1}{2}}(150)+\frac{1}{2\alpha+1}(130)$
+\item then doing the same for the control group we get $\mu_{y|t}(y|t=0)=\Sigma_{s=0}^{1}p(s=s|t=1)\mu_{y|t,s}(t=1,s=s)=\frac{1-\alpha}{1-\alpha+\frac{1}{2}}(140)+\frac{\frac{1}{2}}{1-\alpha+\frac{1}{2}}(120)$
+\item this finally yields ous our observed ate $ATE_{observed}=\mu_{y|t}(y|t=1)-\mu_{y|t}(y|t=0)=\frac{\alpha}{\alpha+\frac{1}{2}}(150)+\frac{1}{2\alpha+1}(130)-\frac{1-\alpha}{1-\alpha+\frac{1}{2}}(140)+\frac{\frac{1}{2}}{1-\alpha+\frac{1}{2}}(120)$
+\end{itemize}
+
+(b) Evaluate your expression for $\alpha$ equal to $0.05,0.5$ and $0.95$.
+\begin{itemize}
+    \item this is literly just plugging in vlaues 
+\end{itemize}
+
+\end{document}

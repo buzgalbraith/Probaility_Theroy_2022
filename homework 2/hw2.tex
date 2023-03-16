@@ -1,0 +1,145 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz,graphicx,amsmath,amsfonts,amscd,amssymb,bm,cite,epsfig,epsf,url}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{amsthm,multirow,wasysym,appendix}
+\usepackage{array,subcaption} 
+% \usepackage[small,bf]{caption}
+\usepackage{bbm}
+\usepackage{pgfplots}
+\usetikzlibrary{spy}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows,automata}
+\usepackage{thmtools}
+\usepackage{blkarray} 
+\usepackage{textcomp}
+
+\usepackage[left=0.8in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+\newcommand{\red}[1]{{\leavevmode\color{red}{#1}}}
+\newcommand{\blue}[1]{{\leavevmode\color{blue}{#1}}}
+\usepackage{graphicx}
+\input{macros}
+
+\begin{document}
+
+\begin{center}
+{\large{\textbf{Homework 2}} } \vspace{0.2cm}\\
+Due September 25 at 11 pm
+\\
+\end{center}
+\input{hwstatement.tex}\\
+
+\begin{enumerate}
+
+\item (Geometric random variable)
+Let $\ra$ be a geometric random variable with parameter $\alpha$. What is the probability that $\ra$ equals $a$ for $a=1,2,3,\ldots$ if we condition on the event $\ra > 5$? Justify your answer mathematically, and also explain why it makes sense intuitively (for example by referring to the coin flip example that we used to derive the geometric pmf). 
+\blue{
+\begin{itemize}
+    \item our goal is to understand the $P(\Tilde{a}=a|\Tilde{a}>5)=\frac{P(\Tilde{a}=a\cap \Tilde{a}>5)}{\Tilde{a}>5}$
+    \item there are two cases to be understood here.
+    \item first consider when $a\leq 5$
+    \begin{itemize}
+        \item given $a\leq 5$ it is clear that  $\{\Tilde{a}=a\cap\Tilde{a}>5\}=\emptyset$ as these two events are disjoint. thus we see that $P(\Tilde{a}=a|\Tilde{a}>5)=\frac{P(\Tilde{a}=a\cap \Tilde{a}>5)}{\Tilde{a}>5}=\frac{P(\emptyset)}{P(\Tilde{a}>5)}=0$
+        \item this makes intuitive sense as if one were to know they had flipped tails at least 5 times and have yet to get a head in a row they know the number of tails they flip prior to getting a heads could never be less than or equal to 5.  
+    \end{itemize}
+    \item consider when $a> 5$
+    \begin{itemize}
+        \item given $a< 5$ it is clear that  $\{\Tilde{a}=a\cap\Tilde{a}>5\}=\{\Tilde{a}=a\}$ as $\{\Tilde{a}=a\}\subseteq\{\Tilde{a}<5\}$ and further $P(\Tilde{a}=a)=\alpha(1-\alpha)^{a-1}$
+        \item further we know that $P(\Tilde{a}>5)=1-P(\Tilde{a}\leq 5)=1-+P(\Tilde{a}=1)+P(\Tilde{a}=2)+P(\Tilde{a}=3)+P(\Tilde{a}=4)+P(\Tilde{a}=5))=1-(\alpha)-(1-\alpha)\alpha-(1-\alpha)^2\alpha-(1-\alpha)^3\alpha-(1-\alpha)^4\alpha=(1-\alpha)(1-\alpha-(1-\alpha)\alpha-(1-\alpha)^2\alpha-(1-\alpha)^3\alpha)=(1-\alpha)^5$
+        \item so thus we finally have $P(\Tilde{a}=a|\Tilde{a}>5)=\frac{P(\Tilde{a}=a\cap \Tilde{a}>5)}{\Tilde{a}>5}=\frac{\alpha(1-\alpha)^{a-1}}{(1-\alpha)^5}=\alpha(1-\alpha)^{a-6}$
+        \item this can again be intuitively thought of with a coin flip. you are given that the coin has already been flipped and landed tails at least 6 times with out yet landing heads. if you now want to know the likelihood of it being flipped and landing tails a-1 total times, and heads once, you knot that the first 6 tails are already given, and there is Independence so you only need to flip tails $a-6$ times and one heads.
+        \item so for instance if we think about the likelihood that the streak is broken at the 6th, given we already know the first 5 coins are tails. then the likelihood of the 6th coin being a head is just alpha. 
+    \end{itemize}
+\end{itemize}
+}
+
+
+\item (Chess games) Garry and Anish decide to play 10 chess games. Garry wins 4, they draw 4, and Anish wins 2. We decide to model the games problematically, assuming that they are independent and in each game Garry has a probability $\theta$ of winning and Anish has a probability $\alpha$ of winning.
+
+\begin{enumerate} 
+\item Plot the log-likelihood function of the parametric model.
+\blue{
+\begin{itemize}
+    \item let $\Tilde{A}$ be the random variable representing the number of times Anish has won, and $\Tilde{G}$ represent the number of times Garry has won.  
+    \item we can express as a multinomial $P_{\Tilde{G}, \Tilde{A}}(g,a)=P(\Tilde{G}=g,\Tilde{A}=a)=\frac{n!}{(a!)+(g!)+(n-a-g)!}(\alpha)^a\theta^g(1-\alpha-\theta)^{1-\alpha-\theta}$
+    \item further assume that we have a data set X=$\{x_1..x_n\}$ and a series of random variables $\Tilde{O_1}...\Tilde{O_N}$ we know that the likelihood of assuming the data set is $\mathcal{L}_{X}(A)=P(\Tilde{O_1}=x_1\cap...\cap\Tilde{O_n}=x_n)=$ further as we assumed each game was independent we see $\Pi_{i=1}^{n}P(\Tilde{O_i}=x_i)$
+    \item then we can take the log of this to get $log\mathcal{L}_{X}(A)=\Sigma_{i=1}^{n}logP(\Tilde{O_i}=x_i)$
+    \item then combining our earlier expression we see that\\
+    $log\mathcal{L}_{X}(a_i,g_i)=\Sigma_{i=1}^{n}log(\frac{n!}{(a_i!)+(g_i!)+(n-a_i-g_i)!}(\alpha)^a_i\theta^g_i(1-\alpha-\theta)^{n-a_i-g_i})=$
+    \item yielding $log\mathcal{L}_{X}(a,g)=\Sigma_{i=1}^{n}(log(n!)-log(a_i!)-log(g_i!)-log((n-a_i-g_i)!)+a_ilog(\alpha) +g_ilog(\theta) + (n-a_i-g_i)(log(1-\theta-\alpha))$
+    \item here is the graph i obtained 
+    \item \includegraphics[width=15cm]{homework 2/temp.png}
+\end{itemize}
+
+}
+
+\item What is the maximum likelihood estimate of $\theta$ and $\alpha$?
+\blue{
+\begin{itemize}
+    \item  this function is non-concave $log\mathcal{L}_{X}(a,g)=\Sigma_{i=1}^{n}(log(n!)-log(a_i!)-log(g_i!)-log((n-a_i-g_i)!)+a_ilog(\alpha) +g_ilog(\theta) + (n-a_i-g_i)(log(1-\theta-\alpha))$ so i found it more simple to re-write this using a Lagrangian. 
+    \item consider the variable $\gamma$ which is the likelihood of a draw.
+    \item we can write $log\mathcal{L}_{X}(a,g)=\Sigma_{i=1}^{n}(log(n!)-log(a_i!)-log(g_i!)-log((n-a_i-g_i)!)+a_ilog(\alpha) +g_ilog(\theta) + (n-a_i-g_i)(log(\gamma))$ as long as we add a Lagrange constraint $\Sigma_{i=1}^{n}(log(n!)-log(a_i!)-log(g_i!)-log((n-a_i-g_i)!)+a_ilog(\alpha) +g_ilog(\theta) + (n-a_i-g_i)(log(\gamma))+\lambda(1-\alpha+\theta+\gamma)$
+    \item taking the partial with respect to $\theta$ we get $\Sigma_{i=1}^{n}\frac{a_i}{\alpha}-\lambda=0$ yielding $\Sigma_{i=1}^{n}\frac{a_i}{\lambda}=\alpha$
+    \item we see similarly that $\Sigma_{i=1}^{n}\frac{g_i}{\lambda}=\theta$ and $\Sigma_{i=1}^{n}\frac{n-a_i-gi}{\lambda}=\gamma$
+    \item so here we can see that $1=\alpha+\theta+\gamma=\Sigma_{i=1}^{n}\frac{g_i}{\lambda}+\Sigma_{i=1}^{n}\frac{n-a_i-gi}{\lambda}+\Sigma_{i=1}^{n}\frac{a_i}{\lambda}=1=\frac{N}{\lambda}$ and finally $\lambda=n$
+    \item so thus we have $\Sigma_{i=1}^{n}\frac{a_i}{\lambda}=\Sigma_{i=1}^{n}\frac{a_i}{n}=\alpha$ that is our max likelihood alpha is the total number of times anish wins over the total number of trials 
+    \item similarly we can see that $\Sigma_{i=1}^{n}\frac{g_i}{\lambda}=\Sigma_{i=1}^{n}\frac{g_i}{n}=\theta$ so that is the ratio of Garry's win over the total number of games
+\end{itemize}
+}
+
+\item Model the data as realizations from a discrete random variable and compute its empirical pmf. Compare this nonparametric model to the parametric model from the previous questions.  
+\blue{
+\begin{itemize}
+    \item we can model this with the empirical observations from the data so that would be. 
+    \item $\alpha_{X}=\frac{\text{number of Anish wins}}{\text{total number of games}}=\frac{2}{10}$ as Anish wins two out of 10 games 
+    \item $\theta_{X}=\frac{\text{number of Gary wins}}{\text{total number of games}}=\frac{4}{10}$ as Garry wins four out of 10 games 
+    \item this is the same as my solution for the multinomial pdf
+\end{itemize}
+}
+\end{enumerate}
+
+\item (Darts) In a game of darts, a player needs to hit a certain number $k$ times. Assume that all attempts are mutually independent, and that the probability of success in each attempt is $\theta$. Derive the pmf of a random variable representing the number of required attempts.
+\blue{
+\begin{itemize}
+    \item we can kind of model this as something between a geometric and a binomial distribution. 
+    \item so first as a modeling assumption. I am going to assume that the player needs to hit k-1 shots, out of his first n-1 shots. and then make the last shot. this makes sense as the if he makes k shots in teh n-1 shots then it would take less than n total shots to hit the number k times and if he does not hit the nth shot then it would take more than n shots to hit k shots. 
+    \item so we can model the previous n-1 shots with a binomial. where the likelihood of hitting is theta. so call $\Tilde{a}$ the number of shots he hits in the first n-1 shots. and $P(\Tilde(A)=k-1)=$\begin{pmatrix}n-1\\k-1\end{pmatrix}$\theta^{k-1}(1-\theta)^{((n-1)-(k-1))}$
+    \item then call $\Tilde{b}$ a variable with the likelihood of hitting a single shot. modeled with a geometric so $P(\Tilde{b}=1)=\theta$
+    \item call $\Tilde{d}$ the total likelihood of it taking you n shots to hit a certain number k times $P(\Tilde{d}=n)=P(\Tilde(A)=k-1)P(\Tilde{b}=1)=$\begin{pmatrix}n-1\\k-1\end{pmatrix}$\theta^{k-1}(1-\theta)^{((n-1)-(k-1))}\theta=$\begin{pmatrix}n-1\\k-1\end{pmatrix}$\theta^{k}(1-\theta)^{n-k}$ 
+\end{itemize}
+}
+\item (Air Traffic)
+The tables in \textit{train.csv} and \textit{test.csv} record the numbers of arriving flights at London Heathrow airport every 10 minutes between 18:00 and 19:30 every day. The training and test data are collected from 2010-06-01 to 2010-12-31 and 2011-01-01 to 2011-06-28, respectively. 
+
+\begin{enumerate}
+\item Use the training set to estimate the pmf using a parametric model and a nonparametric model. Explain any assumptions you make to choose the parametric model. Plot the nonparametric and  parametric pmfs. 
+\blue{
+\begin{itemize}
+\item It makes most sense to construct a parametric model using the Passion distribution. 
+\item first we are going to assume that there exists a fixed rate $\lambda$ at which plains come in. second we are going to assume that if we subdivide our period of observation the likelihood of a plain coming during any specific interval of length n is $\lambda n$. third as n gets sufficiently small, the likelihood of there being two plains during on period of length n approaches zero. finally we assume that the plains are independent of one another. 
+\item we know that the pmf of a passion distribution is $P_x (n)=\frac{\lambda^ae^{-\lambda}}{a!
+}$  as discussed in class we know the likelihood's function for this is $\mathcal{L}_x(\lambda)=\Pi_{i=1}^{n}P_{x}(x_i)=\Pi_{i=1}^{n}\frac{\lambda^ae^{-\lambda}}{a!
+}$ then taking the log of this we get $\Sigma_{i=1}^{n}x_ilog(\lambda)-\lambda-log(x_i!)$ optimizing this yields the max as $\lambda^{*}=\frac{1}{n}\Sigma_{i=1}^{n}x_i$
+\item plotting this versus the empirical distribution we get the fol owing graph.
+\item \includegraphics[width=15cm]{homework 2/here.png}
+\end{itemize}
+ 
+
+}
+\item Evaluate the performance of your two models on the test set. Compute the root mean square error between the estimated pmfs and the empirical pmf of the test set. Which model performs better?
+\blue{
+\begin{itemize}
+    \item the formula for RMSE is RMSE $\sqrt{\frac{(\Sigma(x_i-\Tilde{x_i})^2}{n}}$
+    \item applying this formula we get a parametric RMSE of 0.06589508183337757
+    \item and a empirical RMSE of 0.021742471437206635
+    \item thus the empirical does better
+\end{itemize}
+}
+
+
+\end{enumerate}
+
+\end{enumerate}
+\end{document}

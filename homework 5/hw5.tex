@@ -1,0 +1,298 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz,graphicx,amsmath,amsfonts,amscd,amssymb,bm,cite,epsfig,epsf,url}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{amsthm,multirow,wasysym,appendix}
+\usepackage{array,subcaption} 
+% \usepackage[small,bf]{caption}
+\usepackage{bbm}
+\usepackage{pgfplots}
+\usetikzlibrary{spy}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows,automata}
+\usepackage{thmtools}
+\usepackage{blkarray} 
+\usepackage{textcomp}
+\usepackage[left=0.8in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+\newcommand{\red}[1]{{\leavevmode\color{red}{#1}}}
+\newcommand{\blue}[1]{{\leavevmode\color{blue}{#1}}}
+\usepackage{graphicx}
+\usepackage{booktabs,lipsum,parskip}    
+\usepackage{multirow} 
+\input{macros}
+
+\newcommand{\ru}{\rnd{ u}  }
+\newcommand{\rd}{\rnd{ d}  }
+%\newcommand{\rs}{\rnd{ s}  }
+\newcommand{\ri}{\rnd{ i}  }
+\newcommand{\re}{\rnd{ e}  }
+\newcommand{\rQ}{\rnd{ q}  }
+\newcommand{\rC}{\rnd{ c}  }
+
+
+\begin{document}
+
+\begin{center}
+{\large{\textbf{Homework 5}} } \vspace{0.2cm}\\
+Due October 16 at 11 pm
+\\
+\end{center}
+\input{hwstatement.tex}\\
+
+\begin{enumerate}
+
+\item (Babysitter)
+A babysitter is taking care of a baby. She gives him some food and then puts him to sleep. We make the following assumptions:
+\begin{itemize}
+\item The probability that the food is bad is 0.1. 
+\item If a baby eats food that is bad, they will wake up in the middle of the night. If the food is not bad, they may still wake up (with a probability that depends on whether they are good or bad sleepers). 
+\item All babies can be classified into \emph{good sleepers} or \emph{bad sleepers}. The probability that a baby that is a \emph{good sleeper} wakes up is 0.1 (assuming the food is fine). The probability for a baby that is a \emph{bad sleeper} is 0.8.
+\item A baby is a \emph{good sleeper} with probability 0.6. This is independent from the food.
+\end{itemize} 
+We model the problem by defining Bernoulli random variables $\rb$ indicating whether the baby is a good ($\rb=1$) or bad sleeper ($\rb=0$), $\rw$ indicating whether the baby wakes up in the middle of the night ($\rw=1$) or not ($\rw=0$), and $\rx$ indicating whether the food is bad ($\rx=1$) or not ($\rx=0$). 
+\begin{enumerate}
+\item What is the probability that the baby wakes up in the middle of the night?
+\red{
+\begin{itemize}
+    \item $P_{\Tilde{w}}(1)=P(\Tilde{w}=1)=\Sigma_{b\in\{0,1\}}\Sigma_{x\in\{0,1\}}P_{\Tilde{w},\Tilde{b},\Tilde{x}}(1,b,x)=\Sigma_{b\in\{0,1\}}\Sigma_{x\in\{0,1\}}P(\Tilde{w}=1|\Tilde{b}=b,\Tilde{x}=x)p(\Tilde{b}=b,\Tilde{x}=x)=
+    \Sigma_{b\in\{0,1\}}\Sigma_{x\in\{0,1\}}P(\Tilde{w}=1|\Tilde{b}=b,\Tilde{x}=x)p(\Tilde{b}=b|\Tilde{x}=x)P(\Tilde{x}=x)
+    =\Sigma_{b\in\{0,1\}}\Sigma_{x\in\{0,1\}}P(\Tilde{w}=1|\Tilde{b}=b,\Tilde{x}=x)p(\Tilde{b}=b)P(\Tilde{x}=x)=.442$
+\end{itemize}
+}
+\item If the baby wakes up in the middle of the night, what is the probability that the food was bad?
+\red{
+\begin{itemize}
+    \item$P(\Tilde{x}=1|\Tilde{w}=1)=
+    \Sigma_{b=0}^{1}P(\Tilde{x}=1,\Tilde{b}=b|\Tilde{w}=1)
+    =\Sigma_{b=0}^{1}\frac{P(\Tilde{x}=1,\Tilde{b}=b,\Tilde{w}=1)}{P(\Tilde{w}=1)}$
+    \item $=\Sigma_{b=0}^{1}\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=b)P(\Tilde{x}=1,\Tilde{b}=1)}{P(\Tilde{w}=1)}$
+    \item $=\Sigma_{b=0}^{1}\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=b)P(\Tilde{b}=b|\Tilde{x}=1)P(\Tilde{x}=1)}{P(\Tilde{w}=1)}$
+    \item $=\Sigma_{b=0}^{1}\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=b)P(\Tilde{b}=b)P(\Tilde{x}=1)}{P(\Tilde{w}=1)}$
+    \item =.226
+\end{itemize}
+
+}
+
+
+\item Compute the probability that the food is bad conditioned on the baby waking up and being a good sleeper. Are $\rb$ and $\rx$ conditionally independent given $\rw$? Justify your answer mathematically and explain it intuitively.
+\red{\begin{enumerate}
+    \item first to check  probability that the food is bad conditioned on the baby waking up and being a good sleeper.
+
+\begin{itemize}
+    \item $P(\Tilde{x}=1|\Tilde{b}=0,\Tilde{w}=1)$
+    \item $=\frac{P(\Tilde{x}=1,\Tilde{b}=0,\Tilde{w}=1)}{P(\Tilde{b}=0,\Tilde{w}=1)}$
+    \item =$\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=0)P(\Tilde{b}=0|\Tilde{x}=1)P(\Tilde{x}=1)}{P(\Tilde{b}=0,\Tilde{w}=1)}$
+    \item =$\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=0)P(\Tilde{b}=0)P(\Tilde{x}=1)}{P(\Tilde{b}=0,\Tilde{w}=1)}$
+    \item $=\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=0)P(\Tilde{b}=0)P(\Tilde{x}=1)}{\Sigma_{x=0}^{1} P(\Tilde{b}=0, \Tilde{x}=x,\Tilde{w}=1)}$
+    \item $=\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=0)P(\Tilde{b}=0)P(\Tilde{x}=1)}{\Sigma_{x=0}^{1} P(\Tilde{w}=1|\Tilde{b}=0, \Tilde{x}=x)P(\Tilde{b}=0, \Tilde{x}=x)}$
+    \item $\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=0)P(\Tilde{b}=0)P(\Tilde{x}=1)}{\Sigma_{x=0}^{1} P(\Tilde{w}=1|\Tilde{b}=0, \Tilde{x}=x)P(\Tilde{b}=0| \Tilde{x}=x)P(\Tilde{x}=x)}$
+    \item $\frac{P(\Tilde{w}=1|\Tilde{x}=1,\Tilde{b}=0)P(\Tilde{b}=0)P(\Tilde{x}=1)}{\Sigma_{x=0}^{1} P(\Tilde{w}=1|\Tilde{b}=0, \Tilde{x}=x)P(\Tilde{b}=0)P(\Tilde{x}=x)}$
+    \item 0.5025
+\end{itemize}
+\item now think about Independence
+\begin{itemize}
+    
+\item if they are not conditionally independent 
+\item we can see that $$P(\Tilde{x}=1|\Tilde{b}=0,\Tilde{w}=1)\neq P(\Tilde{x}=1|\Tilde{w}=1)$$
+
+\item if we kow it wake suip and a good sleepwe the probaility that it is a good sleeper goes, since it is not one cause it must be the other
+\end{itemize}
+
+
+\end{enumerate}
+}
+
+\end{enumerate}
+\newpage
+
+\item (Earthquake) During a period of high seismic activity, a group of scientists is trying to predict the occurrence of earthquakes by measuring vibrations in the ground. They model the occurrence of an earthquake as a random variable $\rnd{e}$ ($\rnd{e}=1$ if there is an earthquake, and $\rnd{e}=0$ if there isn't), and the vibrations as a random variable $\rnd{v}$ ($\rnd{v}=0$ if there are no vibrations, $\rnd{v}=1$ if there are small vibrations, and $\rnd{v}=2$ if there are large vibrations). The joint pmf of $\rnd{e}$ and $\rnd{v}$ is:
+\begin{center}
+    \def\arraystretch{2}
+    \hspace{3cm} Vibrations \vspace{0.4cm} \\
+    Earthquake \hspace{0.25cm}
+    \begin{tabular}{| c | c | c |c |}
+    \hline
+     \hspace{0.28cm}  $p_{\rnd{e},\rnd{v}}$ \hspace{0.28cm}  & 0 & 1 & 2 \\
+      \hline
+    0 &  0.8  & 0.05 & 0 \\
+      \hline
+    1 & 0  &  0.05  & 0.1  \\
+      \hline 
+    \end{tabular}
+\end{center}
+The sensor reading is modeled as a Bernoulli random variable $\rnd{s}$ that is conditionally independent of the earthquake given the vibrations. If there are no vibrations, the reading is always 0, if there are small vibrations the reading is 1 with probability 0.5, and if there are large vibrations the reading is always 1.
+\begin{enumerate}
+\item Derive the marginal pmf of $\rnd{s}$.
+% \item If an earthquake occurs, what is the probability that the sensor reading equals 1? 
+\red{
+\begin{itemize}
+    \item we know that the marginal pmf of $\Tilde{s}$ is $$P_{\Tilde{s}}(s)=P(\Tilde{s}=s)$$
+    $$=\Sigma_{e=0}^{1}\Sigma_{v=0}^{2}P_{\Tilde{s},\Tilde{e},\Tilde{v}}(s,e,v)$$ $$=\Sigma_{e=0}^{1}\Sigma_{v=0}^{2}P(\Tilde{s}=s,\Tilde{e}=e,\Tilde{v}=v)$$
+    $$ \Sigma_{e=0}^{1}\Sigma_{v=0}^{2}P(\Tilde{s}=s|\Tilde{e}=e,\Tilde{v}=v)P(\Tilde{e}=e,\Tilde{v}=v)$$
+    $$\Sigma_{e=0}^{1}\Sigma_{v=0}^{2}P(\Tilde{s}=s|\Tilde{v}=v)P(\Tilde{e}=e,\Tilde{v}=v)$$
+    \item plugging in we see that \begin{equation}
+P_{\Tilde{s}}(s) = 
+\left\{
+    \begin{array}{lr}
+        .85, & \text{if } s=0\\
+        .15, & \text{if } s=1
+    \end{array}
+\end{equation}
+    
+\end{itemize}
+
+}
+\item What is the probability that there is an earthquake if the sensor reading equals 1? 
+\red{
+$$P(\Tilde{e}=1|\Tilde{s}=1)$$
+    $$=\Sigma_{v=0}^{2}P(\Tilde{e}=1,\Tilde{v}=v|\Tilde{s}=1)$$
+    $$=\frac{\Sigma_{v=0}^{2}P(\Tilde{e}=1,\Tilde{v}=v,\Tilde{s}=1)}{P(\Tilde{s}=1)} $$
+$$=\frac{\Sigma_{v=0}^{2}P(\Tilde{s}=1|\Tilde{e}=1,\Tilde{v}=v)P(\Tilde{e}=1,\Tilde{v}=v)}{P(\Tilde{s}=1)} $$
+$$=\frac{\Sigma_{v=0}^{2}P(\Tilde{s}=1|\Tilde{v}=v)P(\Tilde{e}=1,\Tilde{v}=v)}{P(\Tilde{s}=1)}$$
+$$=.147$$
+}
+\item Are the random variables $\rnd{s}$ and $\rnd{e}$ independent? Justify your answer mathematically, but also explain it intuitively.
+\red{
+\begin{itemize}
+    \item for the variables $\rnd{s},\rnd{e}$ to be independent we want $P(\rnd{e}|\rnd{s})=P(\rnd{e})$
+    \item last problem we showed $p(\rnd{e}=1|\rnd{s}=1)=.147$
+    \item but this is not equal to $P(\rnd{e}=1)=\Sigma_vP(\rnd{e}=1|\rnd{v}=v)=.15$
+    \item so thus these values are not independent 
+    \item this makes sense intuitively as the sensor is trying to predict earthquakes so information about the sensor should influenced our understanding of there will be an earthquake.
+    
+    
+\end{itemize}
+
+}
+
+\end{enumerate}
+
+\item (Surgery) A hospital wants to evaluate two surgery procedures: A and B. There are two types of patients that receive the procedure, \emph{mild} and \emph{serious} cases. The truth is that procedure A is better. Mild cases recover with probability 0.9 if they receive A, and 0.8 if they receive B. Serious cases recover with probability 0.5 if they receive A, and 0.2 if they receive B.
+
+\begin{enumerate}
+\item The data shows that patients with probability 0.58 if they receive procedure A, and 0.68 if they receive B. How is this possible? Justify your answer mathematically. (Hint: Start by computing what fraction of patients receiving each procedure are mild or serious cases.)
+\red{
+\begin{itemize}
+    \item consider for instance if there were 240 total cases, and 120 serious and 120 severe. 
+    \item suppose procedure A was given to half the patients, 20 with mild cases and 100 with serious cases  and procedure B was given to half the patients 100 with mild cases and 20 with serious cases
+    \item we would then expect that procedure A would have an overall recovery rate of $\frac{.9(20)+.5(100)}{120}=.566$
+    \item while group b would have a recovery rate of$\frac{.8(100)+.2(20)}{120}=.70$ 
+    \item these numbers are not exact but in a similar situation data looking like this could be produced
+\end{itemize}
+}
+
+\item Explain how to analyze the data in order to obtain an accurate conclusion about the surgery procedures. Under what assumption does this work? 
+\red{
+\begin{itemize}
+    \item you would need to subset your data based on severity. 
+    \item you would have to make the assumption that recovery and treatment are conditionally independent on severity of illness.
+\end{itemize}
+}
+
+\item Suggest how to design a follow-up study that would not require adjusting for confounding factors.
+\red{
+\begin{itemize}
+    \item you could design a randomized experiment. in which the participants are randomly assigned to treatment in a way that is completely non-deterministic allowing us to avoid confounders like seriousness of illness.  
+\end{itemize}
+}
+\end{enumerate} 
+
+\item (Stock) The table in \textit{pricedelta.csv} records daily share prices changes. For each stock, model whether the price goes up or down with a Bernoulli random variable. Estimate the following probabilities from the data.
+\begin{enumerate}
+  \item What is the joint pmf of the three random variables representing \textit{amzn}, \textit{jpm}, \textit{spy}? (One $2 \times 2 \times 2$ matrix)
+  \lipsum[1][1-4]
+\begin{itemize}
+    \item here i am modeling the stocking going up as 1 and the stock going down as zero
+\begin{table}[h]
+\caption{Joint PMF}
+\centering
+\begin{tabular}{llrr} 
+\toprule 
+\multirow{2}{*}{\parbox{4em}{AMZN}} & \multirow{2}{*}{\parbox{6em}{SPY}}  & \multicolumn{2}{c}{JPM}\\\cmidrule{3-4} 
+ &  &  0 & 1\\ \midrule 
+0  & 0 & 0.224537& 0.074074\\ 
+& 1 & 0.034722& 0.108796\\ 
+1 & 0 &  0.115741 &  0.037037\\ 
+& 1& 0.104167&  0.300926\\\bottomrule 
+\end{tabular}
+\end{table}
+\end{itemize}
+
+\lipsum[2][7-10]
+  \item What is the marginal pmf of each possible pair of random variables? (Three $2 \times 2$ matrices)
+  \begin{itemize}
+      \item 
+        
+\begin{tabular}{|l|l|l|}
+       \hline & AMZN=0 & AMZN=1     \\
+\hline  JPM=0 &    0.259259    &  0.219907         \\
+\hline JPM=1 &  0.182870       &     0.337963       \\ \hline
+\end{tabular}
+
+\item \begin{tabular}{lll}
+      & AMZN=0 & AMZN=1 &  &  \\
+SPY=0 &      0.298611 &   0.152778       &  &  \\
+SPY=1 &  0.143519        & 0.405093     &  &  \\
+
+\end{tabular}
+\item \begin{tabular}{lll}
+      & JPM=0 & JPM=1 &  &  \\
+SPY=0 &      0.340278 &   0.111111       &  &  \\
+SPY=1 &  0.138889        & 0.409722     &  &  \\
+
+\end{tabular}
+
+
+\end{itemize}
+
+  \item What is the conditional pmf of each possible pair given the remaining random variable? (Three $2 \times 2 \times 2$ matrices)
+\begin{table}[h]
+\caption{conditional pmf of AMZ,SPY on JPM }
+\centering
+\begin{tabular}{llrr} 
+\toprule 
+\multirow{2}{*}{\parbox{4em}{JPM}} & \multirow{2}{*}{\parbox{6em}{SPY}}  & \multicolumn{2}{c}{AMZN}\\\cmidrule{3-4} 
+ &  &  0 & 1\\ \midrule 
+0  & 0 & 0.468599 & 0.241546\\ 
+& 1 & 0.072464& 0.217391\\ 
+1 & 0 &  0.142222 &  0.071111\\ 
+& 1& 0.208889 &  0.577778\\\bottomrule 
+\end{tabular}
+\end{table}
+
+
+  \lipsum[1][1-4]
+
+\begin{table}[h]
+\caption{conditional pmf of AMZ,JPM on SPY}
+\centering
+\begin{tabular}{llrr} 
+\toprule 
+\multirow{2}{*}{\parbox{4em}{SPY}} & \multirow{2}{*}{\parbox{6em}{AMZN}}  & \multicolumn{2}{c}{JPM}\\\cmidrule{3-4} 
+ &  &  0 & 1\\ \midrule 
+0  & 0 & 0.497436 &  0.164103\\ 
+& 1 &0.256410 & 0.082051\\ 
+1 & 0 &  0.063291 &  0.198312\\ 
+& 1& 0.189873& 0.548523\\bottomrule 
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\caption{conditional pmf of JPM, SPY on AMZ}
+\centering
+\begin{tabular}{llrr} 
+\toprule 
+\multirow{2}{*}{\parbox{4em}{AMZN}} & \multirow{2}{*}{\parbox{6em}{SPY}}  & \multicolumn{2}{c}{JPM}\\\cmidrule{3-4} 
+ &  &  0 & 1\\ \midrule 
+0  & 0 &  0.507853 & 0.167539\\ 
+& 1 & 0.078534& 0.246073\\ 
+1 & 0 &  0.207469 &  0.066390\\ 
+& 1& 0.186722 &  0.539419\\\bottomrule 
+\end{tabular}
+\end{table}
+
+\end{enumerate}
+\end{enumerate}
+\end{document}

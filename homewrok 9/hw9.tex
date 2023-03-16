@@ -1,0 +1,135 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz,graphicx,amsmath,amsfonts,amscd,amssymb,bm,cite,epsfig,epsf,url}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{amsthm,multirow,wasysym,appendix}
+\usepackage{array,subcaption} 
+% \usepackage[small,bf]{caption}
+\usepackage{bbm}
+\usepackage{pgfplots}
+\usetikzlibrary{spy}
+\usepgfplotslibrary{external}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows,automata}
+\usepackage{thmtools}
+\usepackage{blkarray} 
+\usepackage{textcomp}
+\usepackage[left=0.8in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+
+\input{macros}
+
+\newcommand{\ru}{\rnd{ u}  }
+\newcommand{\rd}{\rnd{ d}  }
+%\newcommand{\rs}{\rnd{ s}  }
+\newcommand{\ri}{\rnd{ i}  }
+\newcommand{\re}{\rnd{ e}  }
+\newcommand{\rQ}{\rnd{ q}  }
+\newcommand{\rC}{\rnd{ c}  }
+
+
+\begin{document}
+
+\begin{center}
+{\large{\textbf{Homework 9}} } \\%\vspace{0.2cm}\\
+Due Nov 20 at 11 pm
+\\
+\end{center}
+\input{hwstatement.tex}\\
+
+\begin{enumerate}
+
+\item (Short questions) 
+Justify all your answers mathematically.
+\begin{enumerate}
+\item For any random variable $\ra$, can $\E\sqbr{\ra^2}$ be smaller than $\E\sqbr{\ra}^2$?  
+\begin{itemize}
+    \item note that $E[\Tilde{a}^2]-E[\Tilde{a}]^2=var(\Tilde{a})$
+    \item further by definition of variance we can express $E[\Tilde{a}^2]-E[\Tilde{a}]^2=\\var(\Tilde{a})=E[(\Tilde{a}-E[\Tilde{a}])^2]$ without loss of generality we can assume that $\tilde{a}$ is discrete \item thus we have  $E[\Tilde{a}]^2-E[\Tilde{a}]^2=\\var(\Tilde{a})=E[(\Tilde{a}-E[\Tilde{a}])^2]=\Sigma_{a\in A}(a-E[\Tilde{a}])^2P_{(\Tilde{a}-E[\Tilde{a}])^2}((a-E[\Tilde{a}])^2)$
+    \item further we know that $(a-E[\Tilde{a}])^2\geq 0$ since the quantity is squared, and  $P_{(\Tilde{a}-E[\Tilde{a}])^2}((a-E[\Tilde{a}])^2)\geq 0$ as it is a probability measure. 
+    \item thus we can see $E[\Tilde{a}^2]-E[\Tilde{a}]^2=var(\Tilde{a})\geq 0$ which implies that $E[\Tilde{a}^2]\geq E[\Tilde{a}]^2$ for all random variables $\tilde{a}$
+    
+\end{itemize}
+
+
+\item If $\ra$ and $\rb$ have the same distribution and are independent, is it true that $\E [\ra \rb] = \E\sqbr{\ra}^2$?
+
+\begin{itemize}
+
+\item $\forall \tilde{a}, \tilde{b}$ such that $\tilde{a}, \tilde{b}$ are indpendint and $P_{\tilde{a}}(a)=P_{\tilde{b}}(b)$ then we know that $E[\tilde{a}]=E[\tilde{b}]$
+    \item we can express $E[\tilde{a}, \tilde{b}]=\Sigma_{a\in A}\Sigma_{b\in B}abP_{\tilde{a}, \tilde{b}}(a,b)=\Sigma_{a\in A}\Sigma_{b\in B}abP_{\tilde{a}}(a)P_{ \tilde{b}}(b)=\\\Sigma_{a\in A}P_{\tilde{a}}(a)\Sigma_{b\in B}aP_{ \tilde{b}}(b)=E[\tilde{a}]E[\tilde{b}]=E[\tilde{a}]E[\tilde{a}]=E[\tilde{a}]^2$
+\end{itemize}
+\item A teacher of a class of $n$ children asks their parents to leave a present under the Christmas tree in the classroom. The day after, each child picks a present at random. What is the expected number of children that end up getting the present bought by their own parents? (Hint: Define a random variable $\rnd{a}_i$ that is equal to one when kid $i$ gets the present bought by their own parents, and to zero otherwise.)
+
+\begin{itemize}
+    \item define $\tilde{p}$ as the number of remaining presents which is normally distributed between 0,n
+    \item define $\tilde{a}$ as a binomial random variable representing the number of students who get the same present their parent left them.
+    \item then let $\tilde{b}=b(\tilde{a},\tilde{p})$
+    \item so we can write $E[\tilde{b}]=E[b(\tilde{a},\tilde{p})]$ further we know that a binomial can be writ en as a sum of Bernoulli rvs that is $\tilde{a}=\Sigma_{i=1}^{n}a_i$ \item so thus we have $E[\tilde{b}]=E[b(\tilde{a},\tilde{p})]=E[\Sigma_{i=1}^{n}\tilde{a_i}\tilde{p})]=\Sigma_{i=1}^{n}E[\tilde{a_i}\tilde{p})]=\Sigma_{i=1}^{n}\Sigma_{p=1}^{n}a_iP_{\tilde{a_i}\tilde{p}}(a_i,p)P_{\tilde{p}}(p)\\=\Sigma_{p=1}^{n}\Sigma_{i=1}^{n}a_i\frac{1}{p}\frac{1}{n}=\Sigma_{p=1}^{n}\frac{1}{p}\frac{1}{n}=n*\frac{1}{n}\Sigma_{p=1}^{n}\frac{1}{p}=\Sigma_{p=1}^{n}\frac{1}{p}=1$
+    
+\end{itemize}
+\end{enumerate}
+
+  \item (Mean of a function) Let $\ra$ be a discrete random variable with range $A$ and pmf $p_{\ra}$ and let $\rnd{b}:=h(\ra)$ be a random variable with range $B$ obtained by applying a deterministic function $h:\R\rightarrow \R$ to $\ra$. Prove that our definition of $\E(h(\ra))$ is sound, i.e. that
+\begin{align}
+\E(\rnd{b}) & := \sum_{b \in B} b \, p_{\rb}(b) \\
+& = \sum_{a \in A} h(a) p_{\rnd{a}} (a).
+\end{align}
+
+\begin{itemize}
+    \item first we want to show that b=h(a) $\forall b\in B$. this holds direclty from the defention. 
+    \item next we want to show that for the values of a that map to some value of b $P_{\tilde{b}}(b)=P_{\tilde{a}}h(a)$
+    \begin{itemize}
+        \item note that we can expres $P_{\tilde{b}}(b)=P_{h(\tilde{a})}(h(a))$ for some subset of $a\in A$ as we understand h is deterministic, and P is a valid probability funciton 
+        \item we can see that $P_{\tilde{b}}(b)=P_{h(\tilde{a})}(h(a))=P_{\tilde{a}}P(a)$
+    \end{itemize}
+    \item thus we can see that for any $b\in B$ there exists a $a\in A$ such that $aP_{\tilde{a}}(a)=bP_{\tilde{b}}(b)$
+    \item furhter we know that $h:A\rightarrow B$ thus H will map all values in A to B, and there will always be some value in A which maps to all values in A 
+    \item thus we can see that $\E(\rnd{b}) & := \sum_{b \in B} b \, p_{\rb}(b) \\
+ = \sum_{a \in A} h(a) p_{\rnd{a}} (a).$ will hold
+ 
+\end{itemize}
+
+
+\item (Standard deviations) 
+\begin{enumerate}
+\item Compute the standard deviation of the total number of animals (cats + dogs) per household in Example 7.6.
+\begin{itemize}
+    \item from the definition of variance we can compute $var(\tilde{c}+\tilde{d})=E[(\tilde{c}+\tilde{d})^2]-E[\tilde{c}+\tilde{d}]^2$ 
+    \item so first lets find $E[(\tilde{c}+\tilde{d})^2]=E[\tilde{c}^2+2\tilde{c}\tilde{d}+\tilde{d}^2]=E[\tilde{c}^2]+2E[\tilde{c}\tilde{d}]+E[\tilde{d}^2]$ 
+    \item now we can find each of these one at a time form the data. 
+    \item $E[\tilde{c}^2]=\Sigma_{c=0}^{3}c^2p_{\tilde{c}}(c)=1(.15+.05+.02)+4(.1+.03)+9(.05)=1.19$
+    \item$2E[\tilde{c}\tilde{d}]=2\Sigma_{c=0}^{3}\Sigma_{d=0}^{2}cdp_{\tilde{c},\tilde{d}}(c,d)=2(1(.05)+2(.02)+2(.03))=.3$
+    \item $E[\tilde{d}^2]=\Sigma_{c=0}^{2}d^2p_{\tilde{d}}(d)=1(.20+.05+.03)+4(.05+.02)=0.56$
+    \item $E[c+d]^2=(1.05)^2=1.1025$
+    \item $var(\tilde{c}+\tilde{d})=E[(\tilde{c}+\tilde{d})^2]-E[\tilde{c}+\tilde{d}]^2=1.19+.3+.56-1.1025=0.9475$
+    \item then we can finally get our standard deviation as $std(\tilde{c}+\tilde{d})=\sqrt{var(\tilde{c}+\tilde{d})}=\sqrt{.9457}=0.97339$
+    
+\end{itemize}
+
+
+\item Each time a basketball player attempts a shot, it is a 2-point shot with probability $\alpha$ and a 3-point shot with probability $1-\alpha$ for $0 \leq \alpha \leq 1$. The probability that she makes the 2-point shot is 0.5. The probability that she makes the 3-point shot is 0.4. Compute the standard deviation of the points she scores per shot, as a function of $\alpha$. What are the maximum and minimum values of the standard deviation, and at what values of $\alpha$ are they attained?   
+
+\begin{itemize}
+    \item let $\tilde{a}$ take value 1 if the player shoots a two pointer 
+    \item let $\tilde{s}$ take value 1 if the shot goes in 
+    \item we can see that $P_{\tilde{a}}(a=1)=\alpha$
+    \item and $P_{\tilde{a}}(a=0)=1-\alpha$
+    and $p_{\tilde{s}|\tilde{a}}(s=1|a=1)=.5$ and$p_{\tilde{s}|\tilde{a}}(s=1|a=0)=.4$ 
+    \item let $\tilde{p}=p(\tilde{s},\tilde{a})$ represent the number of points a player gets
+    \item $var(\tilde{p})=E[p^2]-E[p]^2$
+    \item we can compute $E[p^2]=\Sigma_{a=0}^{1}\Sigma_{s=0}^{1}p(s,a)^2p_{\tilde{s},\tilde{a}}(s,a)=2^2(\alpha)(.5)+3^2(1-\alpha)(.4)=3.6-1.6\alpha$
+    \item then we can compute$E[p]^2=\Sigma_{a=0}^{1}\Sigma_{s=0}^{1}p(s,a)2p_{\tilde{s},\tilde{a}}(s,a)^2=(2(\alpha)(.5)+3(1-\alpha)(.4))^2=(1.2-.2\alpha)^2=(1.44+4.24\alpha+.4\alpha^2$
+    \item so we finally get $var(\tilde{p})=2.16+2.64\alpha-.4\alpha^2$
+    \item then we can compute the standard devation as $\sqrt{var(\tilde{p})}=\sqrt{2.16-2.12\alpha-.4\alpha^2}$
+    \item this is an inverted parabola. 
+    \item we find that we get the highest standard devation at $\alpha=0$ which yields a std=1.47
+    \item and the lowest standard devation we observe is at $\alpha=1$ with a standard devation of .08
+\end{itemize}
+
+\end{enumerate}
+
+\item (Air Quality) AQI is an index that indicates the level of air pollution (the higher AQI, the more pollution in the air). The file \textit{aqi.npy} records the AQI of a city over a period of time. Compute the mean and standard deviation of AQI, and also a boxplot of the data. Are the mean and standard deviation of AQI a good measure of the level of air pollution in a city?
+
+\end{enumerate}
+\end{document}
